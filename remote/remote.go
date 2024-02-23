@@ -38,7 +38,7 @@ func (r Remote) Toggle() {
 	}
 }
 
-func (r Remote) NextDevice() {
+func (r *Remote) NextDevice() {
 	r.DeviceIdx = (r.DeviceIdx + 1) % len(r.Devices)
 	r.Device = r.Devices[r.DeviceIdx]
 	r.Device.SelectedAnimation()
@@ -100,7 +100,11 @@ func (r *Remote) colorChange(up bool) {
 
 	var newColor string
 	if i, err := util.IndexOf(config.Colors[:], currentColor); err == nil {
-		newColor = config.Colors[(i+sign)%len(config.Colors)]
+		newIndex := (i + sign) % len(config.Colors)
+        if newIndex == -1 {
+            newIndex = len(config.Colors) - 1
+        }
+		newColor = config.Colors[newIndex]
 	} else {
 		newColor = config.Colors[0]
 	}

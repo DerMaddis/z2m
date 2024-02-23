@@ -7,6 +7,7 @@
 *.dll
 *.so
 *.dylib
+z2m
 
 # Test binary, built with `go test -c`
 *.test
@@ -20,4 +21,6 @@
 # Go workspace file
 go.work
 
+# Firebase credentials
 cred.json
+

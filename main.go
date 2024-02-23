@@ -22,6 +22,10 @@ type MqttSwitchMessage struct {
 	linkquality int
 }
 
+func modFloor(a, n int) int {
+	return ((a % n) + n) % n
+}
+
 func main() {
 	bgCtx := context.Background()
 
@@ -32,7 +36,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-    log.Println("firebase opened")
+	log.Println("firebase opened")
 
 	fClient, err := app.Firestore(bgCtx)
 	if err != nil {
@@ -44,7 +48,7 @@ func main() {
 		panic(err)
 	}
 	defer mqttClient.Disconnect(250)
-    log.Println("mqtt opened")
+	log.Println("mqtt opened")
 
 	deviceNames := []string{"strip01", "light01"}
 	sManager := stateManager.New(deviceNames, &mqttClient, fClient.Collection("state"))
@@ -56,7 +60,7 @@ func main() {
 			log.Fatalln(err)
 		}
 
-        log.Println(message)
+		log.Println(message)
 
 		sManager.SwitchPress(message.Action)
 	})
