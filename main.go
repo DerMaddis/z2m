@@ -22,10 +22,6 @@ type MqttSwitchMessage struct {
 	linkquality int
 }
 
-func modFloor(a, n int) int {
-	return ((a % n) + n) % n
-}
-
 func main() {
 	bgCtx := context.Background()
 

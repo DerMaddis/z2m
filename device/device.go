@@ -22,9 +22,9 @@ type Device struct {
 	Update  func(updates []firestore.Update)
 }
 
-func New(name string, state firestoreState.FirestoreState, mqttClient *mqtt.Client, collection firestore.CollectionRef) *Device {
+func New(name string, state firestoreState.FirestoreState, mqttClient *mqtt.Client, collection firestore.CollectionRef) Device {
 	bgCtx := context.Background()
-	return &Device{
+	return Device{
 		Name:  name,
 		State: state,
 		Publish: func(data string) {

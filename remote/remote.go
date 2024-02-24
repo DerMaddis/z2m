@@ -11,13 +11,13 @@ import (
 
 type Remote struct {
 	DeviceIdx int
-	Device    *device.Device
+	Device    device.Device
 	Mode      int
-	Devices   []*device.Device
+	Devices   []device.Device
 }
 
-func New(devices []*device.Device) *Remote {
-	return &Remote{
+func New(devices []device.Device) Remote {
+	return Remote{
 		Devices:   devices,
 		DeviceIdx: 0,
 		Device:    devices[0],

@@ -14,12 +14,12 @@ import (
 )
 
 type StateManager struct {
-	Remote  *remote.Remote
+	Remote  remote.Remote
 }
 
-func New(deviceNames []string, mqttClient *mqtt.Client, collection *firestore.CollectionRef) *StateManager {
+func New(deviceNames []string, mqttClient *mqtt.Client, collection *firestore.CollectionRef) StateManager {
 	bgCtx := context.Background()
-	devices := []*device.Device{}
+	devices := []device.Device{}
 
 	for _, name := range deviceNames {
 		name := name
@@ -38,14 +38,14 @@ func New(deviceNames []string, mqttClient *mqtt.Client, collection *firestore.Co
 		devices = append(devices, device.New(name, state, mqttClient, *collection))
 	}
 
-	return &StateManager{
+	return StateManager{
 		remote.New(devices),
 	}
 }
 
 func (m *StateManager) StateUpdate(deviceName string, state firestoreState.FirestoreState) {
 	log.Println(deviceName, state)
-	searchFunc := func(device *device.Device) bool {
+	searchFunc := func(device device.Device) bool {
 		return device.Name == deviceName
 	}
 
