@@ -7,9 +7,9 @@ import (
 	"log"
 	"time"
 
-	"dermaddis.de/z2m/config"
-	"dermaddis.de/z2m/firestoreState"
-	"dermaddis.de/z2m/util"
+	"github.com/DerMaddis/z2m/config"
+	"github.com/DerMaddis/z2m/firestoreState"
+	"github.com/DerMaddis/z2m/util"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 
 	"cloud.google.com/go/firestore"

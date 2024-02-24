@@ -1,4 +1,4 @@
-module dermaddis.de/z2m
+module github.com/DerMaddis/z2m
 
 go 1.21.3
 

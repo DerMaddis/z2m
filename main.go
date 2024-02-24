@@ -7,8 +7,8 @@ import (
 	"log"
 
 	"cloud.google.com/go/firestore"
-	"dermaddis.de/z2m/firestoreState"
-	"dermaddis.de/z2m/stateManager"
+	"github.com/DerMaddis/z2m/firestoreState"
+	"github.com/DerMaddis/z2m/stateManager"
 	firebase "firebase.google.com/go"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"

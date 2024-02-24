@@ -4,9 +4,9 @@ import (
 	"log"
 
 	"cloud.google.com/go/firestore"
-	"dermaddis.de/z2m/config"
-	"dermaddis.de/z2m/device"
-	"dermaddis.de/z2m/util"
+	"github.com/DerMaddis/z2m/config"
+	"github.com/DerMaddis/z2m/device"
+	"github.com/DerMaddis/z2m/util"
 )
 
 type Remote struct {

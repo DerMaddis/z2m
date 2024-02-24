@@ -4,10 +4,10 @@ import (
 	"context"
 	"log"
 
-	"dermaddis.de/z2m/device"
-	"dermaddis.de/z2m/firestoreState"
-	"dermaddis.de/z2m/remote"
-	"dermaddis.de/z2m/util"
+	"github.com/DerMaddis/z2m/device"
+	"github.com/DerMaddis/z2m/firestoreState"
+	"github.com/DerMaddis/z2m/remote"
+	"github.com/DerMaddis/z2m/util"
 
 	"cloud.google.com/go/firestore"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
