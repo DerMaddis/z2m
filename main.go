@@ -8,10 +8,8 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/DerMaddis/z2m/firestoreState"
-	"github.com/DerMaddis/z2m/stateManager"
-	firebase "firebase.google.com/go"
+	"github.com/DerMaddis/z2m/remote"
 	"google.golang.org/api/iterator"
-	"google.golang.org/api/option"
 
 	"github.com/eclipse/paho.mqtt.golang"
 )
@@ -25,19 +23,11 @@ type MqttSwitchMessage struct {
 func main() {
 	bgCtx := context.Background()
 
-	credFile := "./cred.json"
-	options := option.WithCredentialsFile(credFile)
-
-	app, err := firebase.NewApp(bgCtx, &firebase.Config{}, options)
-	if err != nil {
-		panic(err)
-	}
-	log.Println("firebase opened")
-
-	fClient, err := app.Firestore(bgCtx)
-	if err != nil {
-		panic(err)
-	}
+    fClient, err := NewFirestoreClient()
+    if err != nil {
+        panic(err)
+    }
+    log.Println("firestore opened")
 
 	mqttClient, err := NewMqttClient()
 	if err != nil {
@@ -47,7 +37,7 @@ func main() {
 	log.Println("mqtt opened")
 
 	deviceNames := []string{"strip01", "light01"}
-	sManager := stateManager.New(deviceNames, &mqttClient, fClient.Collection("state"))
+	remote := remote.New(deviceNames, &mqttClient, fClient.Collection("state"))
 
 	mqttClient.Subscribe("z2m/switch01", 0, func(c mqtt.Client, m mqtt.Message) {
 		var message MqttSwitchMessage
@@ -58,7 +48,7 @@ func main() {
 
 		log.Println(message)
 
-		sManager.SwitchPress(message.Action)
+		remote.SwitchPress(message.Action)
 	})
 
 	allDocsIter := fClient.Collection("state").Snapshots(bgCtx)
@@ -75,7 +65,7 @@ func main() {
 			if err != nil {
 				continue
 			}
-			sManager.StateUpdate(change.Doc.Ref.ID, state)
+			remote.StateUpdate(change.Doc.Ref.ID, state)
 		}
 	}
 }
