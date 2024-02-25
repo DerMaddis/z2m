@@ -61,7 +61,7 @@ brightness_down_click (bottom)
 arrow_left_click (left)
 arrow_right_click (right)
 */
-func (r Remote) SwitchPress(action string) {
+func (r *Remote) SwitchPress(action string) {
 	log.Println("SwitchPress", action)
 	switch action {
 	case "toggle":

@@ -28,6 +28,7 @@ func (r *Remote) nextDevice() {
 }
 
 func (r *Remote) nextMode() {
+    log.Println("current mode", r.Mode)
 	if r.Mode == config.BrightnessMode {
 		r.Mode = config.ColorMode
 		r.Device.ColorModeAnimation()
@@ -35,6 +36,7 @@ func (r *Remote) nextMode() {
 		r.Mode = config.BrightnessMode
 		r.Device.BrightnessModeAnimation()
 	}
+    log.Println("mode now", r.Mode)
 }
 
 func (r *Remote) valueDown() {
