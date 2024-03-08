@@ -2,11 +2,16 @@ package remote
 
 import (
 	"log"
+	"sync"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/DerMaddis/z2m/config"
 	"github.com/DerMaddis/z2m/util"
 )
+
+func (r Remote) test() {
+}
 
 func (r Remote) toggle() {
 	currentState := r.Device.State.State
@@ -24,19 +29,36 @@ func (r Remote) toggle() {
 func (r *Remote) nextDevice() {
 	r.DeviceIdx = (r.DeviceIdx + 1) % len(r.Devices)
 	r.Device = r.Devices[r.DeviceIdx]
-	r.Device.SelectedAnimation()
+	go r.Device.SelectedAnimation()
 }
 
 func (r *Remote) nextMode() {
-    log.Println("current mode", r.Mode)
+	log.Println("current mode", r.Mode)
+
+	isOff := r.Device.State.State == "OFF"
+	if isOff {
+		defer func() { // free the main thread as fast as possible
+			go func() {
+				time.Sleep(time.Millisecond * 500)
+				r.Device.Publish(`{"state": "OFF"}`)
+			}()
+		}()
+		r.Device.Publish(`{"state": "ON"}`)
+        time.Sleep(time.Millisecond * 500)
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(1)
 	if r.Mode == config.BrightnessMode {
 		r.Mode = config.ColorMode
-		r.Device.ColorModeAnimation()
+		go r.Device.ColorModeAnimation(&wg)
 	} else if r.Mode == config.ColorMode {
 		r.Mode = config.BrightnessMode
-		r.Device.BrightnessModeAnimation()
+		go r.Device.BrightnessModeAnimation(&wg)
 	}
-    log.Println("mode now", r.Mode)
+
+	log.Println("mode now", r.Mode)
+	wg.Wait()
 }
 
 func (r *Remote) valueDown() {

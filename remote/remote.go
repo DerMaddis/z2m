@@ -28,7 +28,7 @@ func New(deviceNames []string, mqttClient *mqtt.Client, collection *firestore.Co
 			log.Println(err)
 			continue
 		}
-        newDevice := device.New(name, state, mqttClient, *collection)
+		newDevice := device.New(name, state, mqttClient, *collection)
 		devices = append(devices, &newDevice)
 	}
 
@@ -76,4 +76,3 @@ func (r *Remote) SwitchPress(action string) {
 		r.nextMode()
 	}
 }
-

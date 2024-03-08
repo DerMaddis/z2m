@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	"github.com/DerMaddis/z2m/config"
@@ -70,7 +71,8 @@ func (d Device) SelectedAnimation() {
 	d.Publish(fmt.Sprintf(`{"state": "%s", "transition": 0.25}`, currentState))
 }
 
-func (d Device) BrightnessModeAnimation() {
+func (d Device) BrightnessModeAnimation(wg *sync.WaitGroup) {
+    defer wg.Done()
 	currentBrightness := d.State.Brightness
 	var blinkBrightness float32
 
@@ -85,7 +87,8 @@ func (d Device) BrightnessModeAnimation() {
 	d.Publish(fmt.Sprintf(`{"brightness": "%.2f", "transition": 0.25}`, currentBrightness))
 }
 
-func (d Device) ColorModeAnimation() {
+func (d Device) ColorModeAnimation(wg *sync.WaitGroup) {
+    defer wg.Done()
 	currentColor := d.State.Color
 
 	var blinkColor string
